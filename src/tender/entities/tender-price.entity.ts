@@ -21,7 +21,7 @@ export class TenderPrice extends BaseEntity {
   @Column({ type: 'varchar', length: 6 })
   currency: Currency
 
-  @OneToOne(() => Tender, (tender) => tender.price)
+  @OneToOne(() => Tender, (tender) => tender.tenderPrice)
   tender: Tender
 
   @CreateDateColumn()

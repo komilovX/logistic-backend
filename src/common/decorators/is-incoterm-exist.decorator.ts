@@ -10,6 +10,7 @@ import { getRepository } from 'typeorm'
 @ValidatorConstraint({ async: true })
 export class IsIncotermExistConstraint implements ValidatorConstraintInterface {
   validate(incotermId: any) {
+    if (typeof incotermId !== 'number') return false
     return getRepository(Incoterm)
       .findOne(incotermId)
       .then((incoterm) => {

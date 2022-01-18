@@ -10,6 +10,7 @@ import { getRepository } from 'typeorm'
 @ValidatorConstraint({ async: true })
 export class IsOrderExistConstraint implements ValidatorConstraintInterface {
   validate(orderId: any) {
+    console.log('orderId', orderId)
     return getRepository(Order)
       .findOne(orderId)
       .then((order) => {

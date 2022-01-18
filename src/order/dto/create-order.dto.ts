@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud'
-import { IsDate, IsString, IsIn, IsNumber } from 'class-validator'
+import { Type } from 'class-transformer'
+import {
+  IsDate,
+  IsString,
+  IsIn,
+  IsNumber,
+  IsInt,
+  ValidateIf,
+  IsDateString,
+} from 'class-validator'
 import { IsClientExist } from 'src/common/decorators/is-client-exist.decorator'
 import { IsConsigneeExist } from 'src/common/decorators/is-consignee-exist.decorator'
 import { IsIncotermExist } from 'src/common/decorators/is-incoterm-exist.decorator'
@@ -8,8 +17,12 @@ import { ProductType } from 'src/common/enums/product-type.enum'
 
 export class CreateOrderDto {
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   loadingDate: Date
+
+  @ApiProperty()
+  @IsString()
+  loadingAddress: string
 
   @ApiProperty()
   @IsString()
@@ -18,13 +31,15 @@ export class CreateOrderDto {
   @ApiProperty({ enum: ProductType })
   @IsString()
   @IsIn([ProductType.SAFE, ProductType.UNSAFE])
-  productType: string
+  productType: ProductType
 
   @ApiProperty()
+  @Type(() => Number)
   @IsNumber()
   weight: number
 
   @ApiProperty()
+  @Type(() => Number)
   @IsNumber()
   volume: number
 
@@ -40,14 +55,6 @@ export class CreateOrderDto {
   executorId: number
 
   @ApiProperty()
-  @IsNumber()
-  @IsUserExist({
-    message: 'Creator $value not exists',
-  })
-  creatorId: number
-
-  @ApiProperty()
-  @IsNumber()
   @IsIncotermExist({
     message: 'Incoterm $value not exists',
   })
