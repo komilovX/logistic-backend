@@ -34,8 +34,8 @@ export class AuthController {
   @HttpCode(200)
   @Post('signin')
   async signin(@Body() dto: SignInCredentialsDto) {
-    const { login } = await this.service.validateUser(dto.login, dto.password)
-    return this.service.signin(login)
+    const payload = await this.service.validateUser(dto.login, dto.password)
+    return this.service.signin(payload)
   }
 
   @Get('me')

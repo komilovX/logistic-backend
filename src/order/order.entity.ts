@@ -1,4 +1,5 @@
 import { classToPlain, Exclude } from 'class-transformer'
+import { Changes } from 'src/changes/changes.entity'
 import { OrderStatus } from 'src/common/enums/order-status.enum'
 import { ProductType } from 'src/common/enums/product-type.enum'
 import { Client } from 'src/handbook/entities/client.entity'
@@ -56,42 +57,43 @@ export class Order extends BaseEntity {
   @Column({ type: 'varchar', length: 25, default: OrderStatus.NEW })
   status: OrderStatus
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, { eager: true })
   executor: User
 
   @Column({})
   executorId: number
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, { eager: true })
   creator: User
 
-  // TO-DO need remove
+  // TODO need remove
   @Column({ nullable: true })
   creatorId: number
 
-  @ManyToOne(() => Incoterm, (incoterm) => incoterm.orders)
+  @ManyToOne(() => Incoterm, (incoterm) => incoterm.orders, { eager: true })
   incoterm: Incoterm
 
   @Column({})
-  @Exclude({ toPlainOnly: true })
   incotermId: number
 
-  @ManyToOne(() => Client, (client) => client.orders)
+  @ManyToOne(() => Client, (client) => client.orders, { eager: true })
   client: Client
 
   @Column({})
   @Exclude({ toPlainOnly: true })
   clientId: number
 
-  @ManyToOne(() => Consignee, (consignee) => consignee.orders)
+  @ManyToOne(() => Consignee, (consignee) => consignee.orders, { eager: true })
   consignee: Consignee
 
   @Column({})
-  @Exclude({ toPlainOnly: true })
   consigneeId: number
 
   @OneToMany(() => Tender, (tender) => tender.order)
   tender: Tender[]
+
+  @OneToMany(() => Changes, (changes) => changes.order)
+  changes: Changes[]
 
   @CreateDateColumn()
   createdDate: Date

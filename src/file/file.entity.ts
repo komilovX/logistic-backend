@@ -14,7 +14,16 @@ export class File extends BaseEntity {
   id: number
 
   @Column()
-  file: string
+  url: string
+
+  @Column()
+  name: string
+
+  @Column({ nullable: true, type: 'varchar', length: 50 })
+  mimetype: string
+
+  @Column({ nullable: true, type: 'int' })
+  size: number
 
   @CreateDateColumn()
   createdDate: Date

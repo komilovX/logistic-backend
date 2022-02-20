@@ -10,6 +10,9 @@ import { DocumentModule } from './document/document.module'
 import { DocumentTypeModule } from './document-type/document-type.module'
 import { OrderModule } from './order/order.module'
 import { TenderModule } from './tender/tender.module'
+import { TaskModule } from './task/task.module';
+import { FileModule } from './file/file.module';
+import { ChangesModule } from './changes/changes.module';
 
 @Module({
   imports: [
@@ -28,6 +31,9 @@ import { TenderModule } from './tender/tender.module'
     DocumentTypeModule,
     OrderModule,
     TenderModule,
+    TaskModule,
+    FileModule,
+    ChangesModule,
   ],
 })
 export class AppModule {}

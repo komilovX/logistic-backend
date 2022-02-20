@@ -1,13 +1,12 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud'
 import { Type } from 'class-transformer'
 import {
-  IsDate,
   IsString,
   IsIn,
   IsNumber,
-  IsInt,
-  ValidateIf,
   IsDateString,
+  IsOptional,
+  IsBoolean,
 } from 'class-validator'
 import { IsClientExist } from 'src/common/decorators/is-client-exist.decorator'
 import { IsConsigneeExist } from 'src/common/decorators/is-consignee-exist.decorator'

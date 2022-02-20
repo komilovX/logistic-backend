@@ -1,4 +1,3 @@
-import { DocumentType } from 'src/document-type/document-type.entity'
 import { User } from 'src/user/user.entity'
 import {
   BaseEntity,
@@ -6,23 +5,15 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { File } from 'src/file/file.entity'
 import { TaskStatus } from 'src/common/enums/task-status.enum'
 
 @Entity()
-export class Document extends BaseEntity {
+export class Task extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
-
-  @ManyToOne(() => DocumentType, (documentType) => documentType.document)
-  documentType: DocumentType
-
-  @Column()
-  documentTypeId: number
 
   @ManyToOne(() => User, (user) => user.id)
   executor: User
@@ -33,8 +24,8 @@ export class Document extends BaseEntity {
   @ManyToOne(() => User, (user) => user.id)
   creator: User
 
-  @OneToMany(() => File, (file) => file.document, { cascade: true })
-  files: File[]
+  @Column()
+  creatorId: number
 
   @Column('enum', {
     enum: [
@@ -47,11 +38,14 @@ export class Document extends BaseEntity {
   })
   status: TaskStatus
 
-  @Column('time with time zone')
-  deadline: Date
+  @Column()
+  task: string
 
   @Column({ nullable: true, type: 'varchar', length: 255 })
   comment: string
+
+  @Column('time with time zone')
+  deadline: Date
 
   @CreateDateColumn()
   createdDate: Date

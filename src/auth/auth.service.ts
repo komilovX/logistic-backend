@@ -41,8 +41,7 @@ export class AuthService {
     }
   }
 
-  async signin(login: string) {
-    const payload = { login }
+  async signin(payload: Pick<User, 'login' | 'id'>) {
     return {
       access_token: await this.jwtService.signAsync(payload),
     }
@@ -55,7 +54,7 @@ export class AuthService {
   async validateUser(
     login: string,
     password: string,
-  ): Promise<Pick<User, 'login'>> {
+  ): Promise<Pick<User, 'login' | 'id'>> {
     const user = await this.findUser(login)
     if (!user) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR)
@@ -64,6 +63,6 @@ export class AuthService {
     if (!isCorrectPassword) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR)
     }
-    return { login: user.login }
+    return { login: user.login, id: user.id }
   }
 }
