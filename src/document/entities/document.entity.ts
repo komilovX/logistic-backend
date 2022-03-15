@@ -4,6 +4,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -12,6 +13,7 @@ import {
 } from 'typeorm'
 import { File } from 'src/file/file.entity'
 import { TaskStatus } from 'src/common/enums/task-status.enum'
+import { Order } from 'src/order/order.entity'
 
 @Entity()
 export class Document extends BaseEntity {
@@ -30,6 +32,12 @@ export class Document extends BaseEntity {
   @Column()
   executorId: number
 
+  @ManyToOne(() => Order, (order) => order.documents)
+  order: Order
+
+  @Column()
+  orderId: number
+
   @ManyToOne(() => User, (user) => user.id)
   creator: User
 
@@ -44,10 +52,11 @@ export class Document extends BaseEntity {
       TaskStatus.IN_PROCESS,
       TaskStatus.OPEN,
     ],
+    default: TaskStatus.OPEN
   })
   status: TaskStatus
 
-  @Column('time with time zone')
+  @Column()
   deadline: Date
 
   @Column({ nullable: true, type: 'varchar', length: 255 })
@@ -58,4 +67,7 @@ export class Document extends BaseEntity {
 
   @UpdateDateColumn()
   updatedDate: Date
+
+  @DeleteDateColumn()
+  deletedDate: Date
 }

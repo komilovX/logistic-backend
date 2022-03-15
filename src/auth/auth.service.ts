@@ -3,11 +3,12 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { SignUpCredentialsDto } from './dto/signup-credentials.dto'
+import { SignUpCredentialsDto, UpdateUserDto } from './dto/signup-credentials.dto'
 import { User } from '../user/user.entity'
 import {
   ALREADY_REGISTERED_ERROR,
@@ -49,6 +50,35 @@ export class AuthService {
 
   findUser(login: string) {
     return this.usersRepository.findOne({ login })
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<void> {
+    const {
+      role,
+      password,
+      ...otherData
+    } = updateUserDto
+
+    const user = await this.usersRepository.preload({
+      id,
+      ...otherData,
+    })
+    if (!user) {
+      throw new NotFoundException(`User with #${id} not found`)
+    }
+    if (password) {
+      user.salt = await bcrypt.genSalt()
+      user.password = await bcrypt.hash(password, user.salt)
+    }
+    try {
+      await user.save()
+    } catch (e) {
+      if (+e.code === 23505) {
+        throw new ConflictException('User already exist')
+      } else {
+        throw new InternalServerErrorException()
+      }
+    }
   }
 
   async validateUser(

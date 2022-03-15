@@ -10,6 +10,7 @@ import { getRepository } from 'typeorm'
 @ValidatorConstraint({ async: true })
 export class IsClientExistConstraint implements ValidatorConstraintInterface {
   validate(clientId: any) {
+    if (typeof clientId !== 'number') return false
     return getRepository(Client)
       .findOne(clientId)
       .then((client) => {

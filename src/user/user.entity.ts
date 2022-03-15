@@ -5,6 +5,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -47,6 +48,9 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedDate: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   toJSON() {
     return classToPlain(this)

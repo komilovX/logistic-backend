@@ -2,6 +2,7 @@ import { classToPlain, Exclude } from 'class-transformer'
 import { Changes } from 'src/changes/changes.entity'
 import { OrderStatus } from 'src/common/enums/order-status.enum'
 import { ProductType } from 'src/common/enums/product-type.enum'
+import { Document } from 'src/document/entities/document.entity'
 import { Client } from 'src/handbook/entities/client.entity'
 import { Consignee } from 'src/handbook/entities/consignee.entity'
 import { Incoterm } from 'src/handbook/entities/incoterm.entity'
@@ -94,6 +95,9 @@ export class Order extends BaseEntity {
 
   @OneToMany(() => Changes, (changes) => changes.order)
   changes: Changes[]
+
+  @OneToMany(() => Document, (document) => document.order)
+  documents: Document[]
 
   @CreateDateColumn()
   createdDate: Date

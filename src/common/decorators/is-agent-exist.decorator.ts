@@ -10,6 +10,7 @@ import { getRepository } from 'typeorm'
 @ValidatorConstraint({ async: true })
 export class IsAgentExistConstraint implements ValidatorConstraintInterface {
   validate(agentId: any) {
+    if (typeof agentId !== 'number') return false
     return getRepository(Agent)
       .findOne(agentId)
       .then((agent) => {

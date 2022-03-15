@@ -12,6 +12,7 @@ export class IsConsigneeExistConstraint
   implements ValidatorConstraintInterface
 {
   validate(consigneeId: any) {
+    if (typeof consigneeId !== 'number') return false
     return getRepository(Consignee)
       .findOne(consigneeId)
       .then((consignee) => {

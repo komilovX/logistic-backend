@@ -1,4 +1,4 @@
-import { Controller, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Crud, CrudController } from '@nestjsx/crud'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
@@ -19,7 +19,31 @@ import { Document } from './entities/document.entity'
     update: UpdateDocumentDto,
   },
   routes: {
-    only: ['getOneBase', 'getManyBase', 'deleteOneBase'],
+    only: ['getOneBase', 'getManyBase'],
+  },
+  query: {
+    join: {
+      order: {
+        eager: true
+      },
+      'order.client': {
+        eager: true,
+        allow: ['id', 'name'],
+      },
+      'order.incoterm': {
+        eager: true,
+        allow: ['id', 'name'],
+      },
+      'order.consignee': {
+        eager: true,
+        allow: ['id', 'name'],
+      },
+      documentType: {},
+      executor: {},
+      creator: {
+        persist: ['id', 'firstName', 'lastName']
+      }
+    },
   },
 })
 @Controller('document')
@@ -28,7 +52,7 @@ export class DocumentController implements CrudController<Document> {
 
   @Post()
   async create(
-    dto: CreateDocumentDto,
+    @Body() dto: CreateDocumentDto,
     @GetUser() user: User,
   ): Promise<Document> {
     return this.service.create(dto, user)
@@ -36,9 +60,20 @@ export class DocumentController implements CrudController<Document> {
 
   @Put('/:id')
   async update(
-    dto: UpdateDocumentDto,
+    @Body() dto: UpdateDocumentDto,
     @Param('id') id: number,
   ): Promise<Document> {
     return this.service.update(dto, id)
+  }
+
+  @HttpCode(200)
+  @Delete('/:id')
+  async edituser(@Param('id') id: number) {
+    return this.service.deleteDocument(id)
+  }
+
+  @Get('/document-counts')
+  async findDocumnetsCountWithStatus() {
+    return this.service.findDocumnetsCountWithStatus()
   }
 }

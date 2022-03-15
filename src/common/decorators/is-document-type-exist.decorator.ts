@@ -12,6 +12,7 @@ export class IsDocumentTypeExistConstraint
   implements ValidatorConstraintInterface
 {
   validate(documentTypeId: any) {
+    if (typeof documentTypeId !== 'number') return false
     return getRepository(DocumentType)
       .findOne(documentTypeId)
       .then((documentType) => {

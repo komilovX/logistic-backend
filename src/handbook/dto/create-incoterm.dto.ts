@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud'
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 enum IncotermEnum {
   ANY = 'ANY',
@@ -15,6 +15,7 @@ export class CreateIncotermDto {
   type: IncotermEnum
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   info: string
 }

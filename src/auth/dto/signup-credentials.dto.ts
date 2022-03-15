@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud'
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator'
+import { PartialType } from '@nestjs/mapped-types'
+import { IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator'
 
 export class SignUpCredentialsDto {
   @ApiProperty()
@@ -32,6 +33,9 @@ export class SignUpCredentialsDto {
   password: string
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
   role: string
 }
+
+export class UpdateUserDto extends PartialType(SignUpCredentialsDto) {}
