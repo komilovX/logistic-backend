@@ -12,15 +12,25 @@ import { Agent } from './entities/agent.entitiy'
 import { Incoterm } from './entities/incoterm.entity'
 import { Client } from './entities/client.entity'
 import { Consignee } from './entities/consignee.entity'
+import { ContainerTypeController } from './container-type/container-type.controller';
+import { ContainerTypeService } from './container-type/container-type.service';
+import { ContainerType } from './entities/container-type.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Agent, Incoterm, Client, Consignee])],
+  imports: [TypeOrmModule.forFeature([
+    Agent, 
+    Incoterm, 
+    Client, 
+    Consignee, 
+    ContainerType
+  ])],
   controllers: [
     AgentController,
     IncotermController,
     ClientController,
     ConsigneeController,
+    ContainerTypeController,
   ],
-  providers: [IncotermService, AgentService, ClientService, ConsigneeService],
+  providers: [IncotermService, AgentService, ClientService, ConsigneeService, ContainerTypeService],
 })
 export class HandbookModule {}

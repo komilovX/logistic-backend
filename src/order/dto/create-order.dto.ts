@@ -13,6 +13,7 @@ import { IsConsigneeExist } from 'src/common/decorators/is-consignee-exist.decor
 import { IsIncotermExist } from 'src/common/decorators/is-incoterm-exist.decorator'
 import { IsUserExist } from 'src/common/decorators/is-user-exist.decorator'
 import { ProductType } from 'src/common/enums/product-type.enum'
+import { TransporationType } from 'src/common/enums/transporation-type.enum'
 
 export class CreateOrderDto {
   @ApiProperty()
@@ -25,6 +26,21 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsString()
+  shippingAddress: string
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  @IsIn([
+    TransporationType.CONTAINER, 
+    TransporationType.AVIA, 
+    TransporationType.AUTO, 
+    TransporationType.TRAIN
+  ])
+  transporationType: TransporationType
+
+  @ApiProperty()
+  @IsString()
   product: string
 
   @ApiProperty({ enum: ProductType })
@@ -33,14 +49,27 @@ export class CreateOrderDto {
   productType: ProductType
 
   @ApiProperty()
+  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   weight: number
 
   @ApiProperty()
+  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   volume: number
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  containerType: string
+
+  @ApiProperty()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  containerCount: number
 
   @ApiProperty()
   @IsString()
