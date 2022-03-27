@@ -10,6 +10,7 @@ import {
 } from 'class-validator'
 import { IsClientExist } from 'src/common/decorators/is-client-exist.decorator'
 import { IsConsigneeExist } from 'src/common/decorators/is-consignee-exist.decorator'
+import { IsContainerTypeExist } from 'src/common/decorators/is-container-type-exist.decorator'
 import { IsIncotermExist } from 'src/common/decorators/is-incoterm-exist.decorator'
 import { IsUserExist } from 'src/common/decorators/is-user-exist.decorator'
 import { ProductType } from 'src/common/enums/product-type.enum'
@@ -61,8 +62,10 @@ export class CreateOrderDto {
   volume: number
 
   @ApiProperty()
-  @IsOptional()
-  @IsString()
+  @IsNumber()
+  @IsContainerTypeExist({
+    message: 'ContainerType $value not exists',
+  })
   containerType: string
 
   @ApiProperty()

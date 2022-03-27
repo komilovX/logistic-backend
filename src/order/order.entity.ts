@@ -58,7 +58,10 @@ export class Order extends BaseEntity {
   volume: number
 
   @ManyToOne(() => ContainerType, (containerType) => containerType.orders, { eager: true })
-  containerType: string
+  containerType: ContainerType
+
+  @Column({ nullable: true })
+  containerTypeId: number
 
   @Column({ type: 'float', nullable: true })
   containerCount: number

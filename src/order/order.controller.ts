@@ -44,6 +44,11 @@ import { OrderService } from './order.service'
         persist: ['firstName'],
         allow: ['id', 'firstName', 'lastName'],
       },
+      containerType: {
+        eager: true,
+        persist: ['name'],
+        allow: ['id', 'name'],
+      },
     },
   },
 })
